@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Todo List</title>
+  <style>
+    form.inline { display: inline; margin: 0 5px; }
+    input[type="text"] { width: 200px; }
+  </style>
+</head>
+<body>
+  <h1>Todo List</h1>
+
+  <!-- Add Task -->
+  <form action="/add" method="POST">
+    <input type="text" name="task" placeholder="Enter a task" required>
+    <select name="priority">
+      <option value="High">High</option>
+      <option value="Medium">Medium</option>
+      <option value="Low">Low</option>
+    </select>
+    <button type="submit">Add</button>
+  </form>
+
+  <hr>
+
+  <ul>
+    <% todos.forEach(todo => { %>
+      <li>
+        <!-- Display original task -->
+        <strong><%= todo.task %></strong> - <%= todo.priority %>
+
+        <!-- Edit Form -->
+        <form action="/edit" method="POST" class="inline">
+          <input type="hidden" name="id" value="<%= todo.id %>">
+          <input type="text" name="task" value="<%= todo.task %>" required>
+          <select name="priority">
+            <option value="High" <%= todo.priority === 'High' ? 'selected' : '' %>>High</option>
+            <option value="Medium" <%= todo.priority === 'Medium' ? 'selected' : '' %>>Medium</option>
+            <option value="Low" <%= todo.priority === 'Low' ? 'selected' : '' %>>Low</option>
+          </select>
+          <button type="submit">Edit</button>
+        </form>
+
+        <!-- Delete Form -->
+        <form action="/delete" method="POST" class="inline">
+          <input type="hidden" name="id" value="<%= todo.id %>">
+          <button type="submit">Delete</button>
+        </form>
+      </li>
+    <% }) %>
+  </ul>
+</body>
+</html>
